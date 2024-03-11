@@ -52,6 +52,26 @@ public class CreditCardTest {
         );
     }
 
+    @Test
+    void itAllowsWithdrawMoney(){
+        var card = new CreditCard();
+        card.assignCredit(BigDecimal.valueOf(2000));
+        card.withdraw(BigDecimal.valueOf(1000));
+        assertEquals(BigDecimal.valueOf(1000), card.getBalance());
+    }
+
+    @Test
+    void itDenyTransactionsOverTheBalance(){
+        var card = new CreditCard();
+        card.assignCredit(BigDecimal.valueOf(2000));
+        card.withdraw(BigDecimal.valueOf(1500));
+
+        assertThrows(
+                TransactionDenyException.class,
+                () -> card.withdraw(BigDecimal.valueOf(1000))
+        );
+
+    }
 
 }
 
